@@ -2446,6 +2446,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "joshpetit",
+      "name": "Joshua Petitma",
+      "avatar_url": "https://avatars.githubusercontent.com/u/59021155?v=4",
+      "profile": "https://petit.dev",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 16,
