@@ -42,12 +42,12 @@ Please read the [contributing guidelines](CONTRIBUTING.md) to setup your develop
 
 <p>
   <a href="https://www.digitalocean.com/?refcode=5292301af793">
-    <img src="https://getferdi.com/wp-content/uploads/sites/4/2021/09/digitalocean-logo-vector-1-1.svg" height="32px">
+    <img src="./branding/digitalocean.svg" alt="DigitalOcean" height="32px">
   </a>
 </p>
 <p>
   <a href="https://www.parallels.com/">
-    <img src="https://getferdi.com/wp-content/uploads/sites/4/2021/12/Parallels_logo.svg" height="30px">
+    <img src="./branding/parallels.svg" alt="Parallels" height="30px">
   </a>
 </p>
 
