@@ -10,6 +10,16 @@ import {
   SERVER_NOT_LOADED,
 } from '../config';
 
+export function needsToken(): boolean {
+  return (window as any).ferdi.stores.settings.all.app.server === LOCAL_SERVER;
+}
+
+export function localServerToken(): string | undefined {
+  return needsToken()
+    ? (window as any).ferdi.stores.requests.localServerToken
+    : undefined;
+}
+
 // Note: This cannot be used from the internal-server since we are not running within the context of a browser window
 const apiBase = (withVersion = true) => {
   if (
@@ -32,6 +42,13 @@ const apiBase = (withVersion = true) => {
 };
 
 export default apiBase;
+
+export function importExportURL() {
+  const base = apiBase(false);
+  return needsToken()
+    ? `${base}/token/${localServerToken()}`
+    : base;
+}
 
 export function termsBase() {
   // TODO: This needs to handle local vs ferdi vs franz servers

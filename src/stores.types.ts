@@ -159,6 +159,7 @@ interface RequestsStore {
   actions: Actions;
   api: Api;
   localServerPort: () => void;
+  localServerToken: string | undefined;
   retries: number;
   retryDelay: number;
   servicesRequest: () => void;

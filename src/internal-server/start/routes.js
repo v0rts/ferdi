@@ -5,6 +5,8 @@
 |
 */
 
+const { timingSafeEqual } = require('crypto');
+
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route');
 
@@ -14,14 +16,38 @@ const migrate = require('./migrate');
 
 migrate();
 
+async function validateToken(clientToken, response, next) {
+  const serverToken = process.env.FERDI_LOCAL_TOKEN;
+  const valid = serverToken &&
+    clientToken &&
+    timingSafeEqual(Buffer.from(clientToken, 'utf8'), Buffer.from(serverToken, 'utf8'));
+  if (valid) {
+    await next();
+    return true;
+  }
+  return response.forbidden();
+}
+
 const OnlyAllowFerdi = async ({ request, response }, next) => {
   const version = request.header('X-Franz-Version');
   if (!version) {
-    return response.status(403).redirect('/');
+    return response.forbidden();
   }
 
-  await next();
-  return true;
+  const clientToken = request.header('X-Ferdi-Local-Token');
+  return validateToken(clientToken, response, next);
+};
+
+const RequireTokenInQS = async ({ request, response }, next) => {
+  const clientToken = request.get().token;
+  return validateToken(clientToken, response, next);
+}
+
+const FERDI_LOCAL_TOKEN_COOKIE = 'ferdi-local-token';
+
+const RequireAuthenticatedBrowser = async({ request, response }, next) => {
+  const clientToken = request.cookie(FERDI_LOCAL_TOKEN_COOKIE);
+  return validateToken(clientToken, response, next);
 };
 
 // Health: Returning if all systems function correctly
@@ -67,16 +93,33 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('icon/:id', 'ServiceController.icon');
-}).prefix(API_VERSION);
+})
+.prefix(API_VERSION)
+.middleware(RequireTokenInQS);
 
 // Franz account import
-Route.post('import', 'UserController.import');
-Route.get('import', ({ view }) => view.render('import'));
+Route.group(() => {
+  // Franz account import
+  Route.post('import', 'UserController.import');
+  Route.get('import', ({ view }) => view.render('import'));
 
-// Account transfer
-Route.get('export', 'UserController.export');
-Route.post('transfer', 'UserController.importFerdi');
-Route.get('transfer', ({ view }) => view.render('transfer'));
+  // Account transfer
+  Route.get('export', 'UserController.export');
+  Route.post('transfer', 'UserController.importFerdi');
+  Route.get('transfer', ({ view }) => view.render('transfer'));
 
-// Index
-Route.get('/', ({ view }) => view.render('index'));
+  // Index
+  Route.get('/', ({ view }) => view.render('index'));
+}).middleware(RequireAuthenticatedBrowser);
+
+Route.get('token/:token', ({ params: { token }, response }) => {
+  if (validateToken(token)) {
+    response.cookie(FERDI_LOCAL_TOKEN_COOKIE, token, {
+      httpOnly: true,
+      sameSite: true,
+      path: '/',
+    });
+    return response.redirect('/');
+  }
+  return response.forbidden();
+});

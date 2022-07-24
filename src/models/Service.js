@@ -13,6 +13,7 @@ import {
   ifUndefinedBoolean,
   ifUndefinedNumber,
 } from '../jsUtils';
+import { needsToken } from '../api/apiBase';
 
 const debug = require('debug')('Ferdi:Service');
 
@@ -264,6 +265,21 @@ export default class Service {
 
   @computed get icon() {
     if (this.iconUrl) {
+      if (needsToken()) {
+        let url;
+        try {
+          url = new URL(this.iconUrl);
+        } catch (error) {
+          debug('Invalid url', this.iconUrl, error);
+          return this.iconUrl;
+        }
+        const requestStore = window.ferdi.stores.requests;
+        // Make sure we only pass the token to the local server.
+        if (url.origin === requestStore.localServerOrigin) {
+          url.searchParams.set('token', requestStore.localServerToken);
+          return url.toString();
+        }
+      }
       return this.iconUrl;
     }
 

@@ -2,6 +2,8 @@ import { ipcRenderer } from 'electron';
 import { action, computed, observable } from 'mobx';
 import ms from 'ms';
 
+import { LOCAL_HOSTNAME, LOCAL_PORT } from '../config';
+
 import Store from './lib/Store';
 
 const debug = require('debug')('Ferdi:RequestsStore');
@@ -13,7 +15,9 @@ export default class RequestStore extends Store {
 
   @observable showRequiredRequestsError = false;
 
-  @observable localServerPort = 45_569;
+  @observable localServerPort = LOCAL_PORT;
+
+  @observable localServerToken = undefined;
 
   retries = 0;
 
@@ -37,6 +41,9 @@ export default class RequestStore extends Store {
       if (data.port) {
         this.localServerPort = data.port;
       }
+      if (data.token) {
+        this.localServerToken = data.token;
+      }
     });
   }
 
@@ -46,6 +53,10 @@ export default class RequestStore extends Store {
 
   @computed get areRequiredRequestsLoading() {
     return this.userInfoRequest.isExecuting || this.servicesRequest.isExecuting;
+  }
+
+  @computed get localServerOrigin() {
+    return `http://${LOCAL_HOSTNAME}:${this.localServerPort}`;
   }
 
   @action _retryRequiredRequests() {
