@@ -199,7 +199,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "optionalDependencies": {
-    "node-mac-permissions": "git@github.com:vraravam/node-mac-permissions.git#3cffec37379e6584627d831611a8ff12b57bbcdb"
+    "node-mac-permissions": "^2.2.1"
   },
   "browserslist": [
     "last 2 Chrome versions"
