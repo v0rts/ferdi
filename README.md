@@ -20,6 +20,7 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 <a href='#contributors-'><img src='https://img.shields.io/badge/contributors-262-default.svg?logo=github' alt='Contributors'/></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+<a href="#backers-via-open-collective"><img alt="Open Collective backers" src="https://img.shields.io/opencollective/backers/getferdi?logo=open-collective"></a>
 </p>
 
 > 🤴🏽 Hard-fork of [Franz](https://github.com/meetfranz/franz), adding awesome features and removing unwanted ones.
@@ -38,7 +39,21 @@ _Find answers to frequently asked questions on [getferdi.com/faq](https://getfer
 
 Please read the [contributing guidelines](CONTRIBUTING.md) to setup your development machine and proceed.
 
-## Sponsors
+## Contributors ✨
+
+Special thanks goes to these awesome people:
+
+<a href="https://github.com/getferdi/ferdi/blob/develop/.all-contributorsrc" target="_blank"><img src="https://opencollective.com/getferdi/contributors.svg?avatarHeight=42&width=890&button=off"></a>
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+### Backers via Open Collective
+
+<a href="https://opencollective.com/getferdi#section-contribute" target="_blank"><img src="https://opencollective.com/getferdi/backers.svg?avatarHeight=42&width=890"></a>
+
+Mention to the individuals backing us via [GitHub Sponsors](https://github.com/sponsors/getferdi) as well.
+
+### Sponsors
 
 <p>
   <a href="https://www.digitalocean.com/?refcode=5292301af793">
